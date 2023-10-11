@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+    .heading{
+        color: brown;
+        font-size: 29px;
+    }
+    .para{
+    font-size: 14px;
+    margin-top: -18px;
+    color: burlywood;
+    }
+    .button{
+        background-color: rgb(119, 12, 12);
+    }
+    .button:hover{
+        background-color: rgb(119, 12, 12);
+    }
+    </style>
+</head>
+
+<body class="bg-gray-200 h-screen flex justify-center items-center">
+    <div class="bg-white p-8 rounded shadow-lg">
+        <h1 class="text-2xl font-semibold mb-4 heading">BMI Calculator</h1>
+        <p class="para">This BMI Calculator is made by Debnath Dolai</p><br>
+        <div>
+            <label class="block text-sm font-medium text-gray-600 mb-2">Weight (kg)</label>
+            <input id="weight" type="number" class="w-full py-2 px-4 border rounded focus:outline-none focus:border-blue-500">
+        </div>
+        <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-600 mb-2">Height</label>
+            <div class="flex items-center mb-2">
+                <input type="radio" id="meters" name="heightUnit" class="mr-2" checked>
+                <label for="meters">Meters</label>
+                <input type="radio" id="centimeters" name="heightUnit" class="mr-2 ml-4">
+                <label for="centimeters">Centimeters</label>
+                <input type="radio" id="inches" name="heightUnit" class="mr-2 ml-4">
+                <label for="inches">Inches</label>
+            </div>
+            <input id="height" type="number" class="w-full py-2 px-4 border rounded focus:outline-none focus:border-blue-500">
+        </div>
+        <button id="calculateBtn" class="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue button">Calculate BMI</button>
+        <div id="result" class="mt-6 text-gray-800 font-semibold"></div>
+    </div>
+
+    <script>
+        document.getElementById('calculateBtn').addEventListener('click', function () {
+    var weight = parseFloat(document.getElementById('weight').value);
+    var height = parseFloat(document.getElementById('height').value);
+    var heightUnit = document.querySelector('input[name="heightUnit"]:checked').id;
+    
+    if (heightUnit === 'centimeters') {
+        height = height / 100; // Convert height from centimeters to meters
+    } else if (heightUnit === 'inches') {
+        height = height * 0.0254; // Convert height from inches to meters
+    }
+    
+    var bmi = calculateBMI(weight, height);
+    var result = 'Your BMI is ' + bmi.toFixed(2) + '. ';
+    result += interpretBMI(bmi);
+    document.getElementById('result').textContent = result;
+});
+
+function calculateBMI(weight, height) {
+    return weight / (height * height);
+}
+
+function interpretBMI(bmi) {
+    if (bmi < 18.5) {
+        return 'You are underweight.';
+    } else if (bmi < 24.9) {
+        return 'You have a normal weight.';
+    } else if (bmi < 29.9) {
+        return 'You are overweight.';
+    } else {
+        return 'You are obese.';
+    }
+}
+
+    </script>
+</body>
+
+</html>
