@@ -54,9 +54,20 @@
 
 <body class="bg-gray-200 h-screen flex justify-center items-center">
     <div class="bg-white p-8 rounded shadow-lg main-container">
-        <h1 class=" mb-4 heading font-extrabold text-red-900 text-3xl">BMI Calculator</h1>
+        <h1 class="mb-4 heading font-extrabold text-red-900 text-3xl">BMI Calculator</h1>
         <p class="para">This BMI Calculator is made by Debnath Dolai</p><br>
         <div>
+            <label class="block text-sm font-medium text-gray-600 mb-2">Gender</label>
+            <select id="gender" class="w-full py-2 px-4 border rounded focus:outline-none focus:border-blue-500">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-600 mb-2">Age</label>
+            <input id="age" type="number" class="w-full py-2 px-4 border rounded focus:outline-none focus:border-blue-500">
+        </div>
+        <div class="mt-4">
             <label class="block text-sm font-medium text-gray-600 mb-2">Weight (kg)</label>
             <input id="weight" type="number" class="w-full py-2 px-4 border rounded focus:outline-none focus:border-blue-500">
         </div>
@@ -74,43 +85,127 @@
         </div>
         <button id="calculateBtn" class="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue button">Calculate BMI</button>
         <div id="result" class="mt-6 text-gray-800 font-semibold"></div>
+
+        <script>
+            document.getElementById('calculateBtn').addEventListener('click', function () {
+                var weight = parseFloat(document.getElementById('weight').value);
+                var height = parseFloat(document.getElementById('height').value);
+                var heightUnit = document.querySelector('input[name="heightUnit"]:checked').id;
+                var gender = document.getElementById('gender').value;
+                var age = parseInt(document.getElementById('age').value);
+
+                // Conversion logic for height units
+                if (heightUnit === 'centimeters') {
+                    height /= 100; // Convert height from centimeters to meters
+                } else if (heightUnit === 'inches') {
+                    height *= 0.0254; // Convert height from inches to meters
+                }
+
+                var bmi = calculateBMI(weight, height);
+                var result = 'Your BMI is ' + bmi.toFixed(2) + '. ';
+                result += interpretBMI(bmi, gender, age);
+                document.getElementById('result').textContent = result;
+            });
+
+            function calculateBMI(weight, height) {
+                return weight / (height * height);
+            }
+
+            function interpretBMI(bmi, gender, age) {
+                if (age >= 2 && age <= 5) {
+                    return interpretForAgeGroup(bmi, gender, '2-5 years');
+                } else if (age >= 6 && age <= 17) {
+                    return interpretForAgeGroup(bmi, gender, '6-17 years');
+                } else if (age >= 18 && age <= 64) {
+                    return interpretForAgeGroup(bmi, gender, '18-64 years');
+                } else if (age >= 65) {
+                    return interpretForAgeGroup(bmi, gender, '65+ years');
+                } else {
+                    return 'Invalid age. Please enter a valid age between 2 and 120 years.';
+                }
+            }
+
+            function interpretForAgeGroup(bmi, gender, ageGroup) {
+    if (gender === 'male') {
+        if (ageGroup === '2-5 years') {
+            // Interpretation logic for males aged 2-5 years
+        } else if (ageGroup === '6-17 years') {
+            // Interpretation logic for males aged 6-17 years
+            if (bmi < 16.5) {
+                return 'Underweight';
+            } else if (bmi < 24.9) {
+                return 'Healthy weight';
+            } else if (bmi < 29.9) {
+                return 'Overweight';
+            } else {
+                return 'Obese';
+            }
+        } else if (ageGroup === '18-64 years') {
+            // Interpretation logic for males aged 18-64 years
+            if (bmi < 18.5) {
+                return 'Underweight';
+            } else if (bmi < 24.9) {
+                return 'Healthy weight';
+            } else if (bmi < 29.9) {
+                return 'Overweight';
+            } else {
+                return 'Obese';
+            }
+        } else if (ageGroup === '65+ years') {
+            // Interpretation logic for males aged 65+ years
+            if (bmi < 23) {
+                return 'Underweight';
+            } else if (bmi < 27) {
+                return 'Healthy weight';
+            } else if (bmi < 30) {
+                return 'Overweight';
+            } else {
+                return 'Obese';
+            }
+        }
+    } else if (gender === 'female') {
+        if (ageGroup === '2-5 years') {
+            // Interpretation logic for females aged 2-5 years
+        } else if (ageGroup === '6-17 years') {
+            // Interpretation logic for females aged 6-17 years
+            if (bmi < 16.5) {
+                return 'Underweight';
+            } else if (bmi < 24.9) {
+                return 'Healthy weight';
+            } else if (bmi < 29.9) {
+                return 'Overweight';
+            } else {
+                return 'Obese';
+            }
+        } else if (ageGroup === '18-64 years') {
+            // Interpretation logic for females aged 18-64 years
+            if (bmi < 18.5) {
+                return 'Underweight';
+            } else if (bmi < 24.9) {
+                return 'Healthy weight';
+            } else if (bmi < 29.9) {
+                return 'Overweight';
+            } else {
+                return 'Obese';
+            }
+        } else if (ageGroup === '65+ years') {
+            // Interpretation logic for females aged 65+ years
+            if (bmi < 25) {
+                return 'Underweight';
+            } else if (bmi < 30) {
+                return 'Healthy weight';
+            } else if (bmi < 35) {
+                return 'Overweight';
+            } else {
+                return 'Obese';
+            }
+        }
+    }
+}
+
+        </script>
+
     </div>
-
-    <script>
-        document.getElementById('calculateBtn').addEventListener('click', function () {
-    var weight = parseFloat(document.getElementById('weight').value);
-    var height = parseFloat(document.getElementById('height').value);
-    var heightUnit = document.querySelector('input[name="heightUnit"]:checked').id;
-    
-    if (heightUnit === 'centimeters') {
-        height = height / 100; // Convert height from centimeters to meters
-    } else if (heightUnit === 'inches') {
-        height = height * 0.0254; // Convert height from inches to meters
-    }
-    
-    var bmi = calculateBMI(weight, height);
-    var result = 'Your BMI is ' + bmi.toFixed(2) + '. ';
-    result += interpretBMI(bmi);
-    document.getElementById('result').textContent = result;
-});
-
-function calculateBMI(weight, height) {
-    return weight / (height * height);
-}
-
-function interpretBMI(bmi) {
-    if (bmi < 18.5) {
-        return 'You are underweight.';
-    } else if (bmi < 24.9) {
-        return 'You have a normal weight.';
-    } else if (bmi < 29.9) {
-        return 'You are overweight.';
-    } else {
-        return 'You are obese.';
-    }
-}
-
-    </script>
 </body>
 
 </html>
